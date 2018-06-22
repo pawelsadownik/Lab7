@@ -17,12 +17,22 @@ public class PersonResource {
 
     @PersistenceContext(unitName="demoPU")
     EntityManager em;
-
+/*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> getPeople() {
 
         return em.createNamedQuery("person.all", Person.class).getResultList();
+    }
+*/
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getAll(@QueryParam("page") int page) {
+        return em
+                .createNamedQuery("person.all", Person.class)
+                .setMaxResults(3)
+                .setFirstResult((page-1) * 3)
+                .getResultList();
     }
 
     @POST
